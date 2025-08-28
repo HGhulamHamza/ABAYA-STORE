@@ -25,12 +25,14 @@
 }
 
 .navbar-links {
+ 
   list-style: none;
   display: flex;
   gap: 35px;
 }
 
 .navbar-links li a {
+   margin-left: 10px;
   text-decoration: none;
   color: #333;
   font-weight: 500;
@@ -84,26 +86,50 @@
   display: none;
   font-size: 26px;
   cursor: pointer;
+  z-index: 1100; /* always above menu */
 }
+
+.hidden {
+  display: none !important; /* force hide */
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+}
+
+
 
 /* ✅ Mobile Fix */
 @media (max-width: 768px) {
-  .navbar {
-    padding: 10px 20px;
-  }
+   .navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #ffffff00;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 9999;  /* ✅ force always above slider */
+}
 
-  .navbar-links {
-    position: absolute;
-    top: 70px;
-    right: 0;
-    width: 200px;
-    background: #fff;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    display: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  }
+.navbar-links {
+  position: absolute;
+  top: 100%;       /* ✅ open below navbar */
+  right: 0;
+  width: 200px;
+  background: #fff;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  display: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
 
   .navbar-links.active {
     display: flex;

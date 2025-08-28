@@ -7,6 +7,11 @@ import "../components/Navbar.css"; // external css
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // ✅ closes menu when link is clicked
+  const handleLinkClick = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <nav className="navbar">
       {/* Logo */}
@@ -16,10 +21,10 @@ function Navbar() {
 
       {/* Nav Links */}
       <ul className={`navbar-links ${menuOpen ? "active" : ""}`}>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/about">About</Link></li>
-        <li><Link to="/products">Products</Link></li>
-        <li><Link to="/contact">Contact</Link></li>
+        <li><Link to="/" onClick={handleLinkClick}>Home</Link></li>
+        <li><Link to="/about" onClick={handleLinkClick}>About</Link></li>
+        <li><Link to="/products" onClick={handleLinkClick}>Products</Link></li>
+        <li><Link to="/contact" onClick={handleLinkClick}>Contact</Link></li>
       </ul>
 
       {/* Right side icons */}
@@ -30,6 +35,8 @@ function Navbar() {
         </div>
         <Link to="/cart"><FaShoppingCart className="cart-icon" /></Link>
         <Link to="/signup" className="signup-btn">Sign Up</Link>
+
+        {/* ✅ toggle works correctly now */}
         <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <FaTimes /> : <FaBars />}
         </div>

@@ -154,18 +154,22 @@ function Home() {
             color: #F5F5DC;
           }
 
-          .hero-text button {
-            background-color: #006400;
-            color: #F5F5DC;
-            padding: 12px 26px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
-          }
+         .hero-text button {
+  background-color: #006400;
+  color: #F5F5DC;
+  padding: 12px 26px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+  
+  width: 180px;   /* ✅ fixed size for consistency */
+  text-align: center;
+}
+
 
           /* Swiper buttons & bullets */
           .swiper-button-prev,
@@ -236,6 +240,14 @@ function Home() {
     width: 100%;       /* ✅ ensure slide covers screen */
   }
 }
+  @media (max-width: 768px) {
+  .hero-text button {
+    width: 140px;  /* ✅ slightly smaller on mobile */
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+}
+
 
           }
         `}

@@ -20,8 +20,8 @@ const ProductCategories = () => {
     { name: "Wedding Abayas", image: "/3.jpg" },
     { name: "Georgette Hijabs", image: "/5.jpg" },
     { name: "Hijabs", image: "/4.jpg" },
-    { name: "Hijab & Niqab Sets", image: "/.jpg" },
-    { name: "Hijab & Under Cap Sets", image: "/.jpg" },
+    { name: "Hijab & Niqab Sets", image: "/8.jpg" },
+    { name: "Hijab & Under Cap Sets", image: "/9.jpg" },
     { name: "Niqabs", image: "/6.jpg" },
     { name: "Accessories", image: "/placeholder9.jpg" },
     { name: "Winter Collection", image: "/7.jpg" },
@@ -41,8 +41,8 @@ const ProductCategories = () => {
             <div
               key={index}
               style={styles.card}
-              onMouseEnter={() => !isMobile && setHoverIndex(index)}
-              onMouseLeave={() => !isMobile && setHoverIndex(null)}
+              onMouseEnter={() => isMobile && setHoverIndex(index)}
+              onMouseLeave={() => isMobile && setHoverIndex(null)}
             >
               <img src={cat.image} alt={cat.name} style={styles.image} />
 

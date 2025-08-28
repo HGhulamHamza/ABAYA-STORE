@@ -32,7 +32,7 @@ function Footer() {
         <div className="footer-contact">
           <h3>Contact</h3>
           <p>Pakistan</p>
-          <p>Email: info@sumptuousmodesty.com</p>
+          <a>Email: anoshasaeed408@gmail.com</a>
           <p>WhatsApp: +92 330 3454454</p>
         </div>
       </div>

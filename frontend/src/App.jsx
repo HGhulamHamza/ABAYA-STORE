@@ -5,11 +5,12 @@ import Categories from "./pages/ProductCategories";
 // import CategoryProducts from "./pages/CategoryProducts";
 // import ProductDetails from "./pages/ProductDetails";
 // import Cart from "./pages/Cart";
-// import SignIn from "./pages/SignIn";
-// import SignUp from "./pages/SignUp";
+import SignIn from "./pages/Login";
+import SignUp from "./pages/Signup";
 import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import Products from "./pages/Products";
 
 function App() {
   return (
@@ -23,15 +24,16 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+           <Route path="/products" element={<Categories />} />
             
-             <Route path="/products" element={<Categories />} />
+             <Route path="/catproducts" element={<Products />} />
             {/* <Route path="/category/:id" element={<CategoryProducts />} />
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/cart" element={<Cart />} /> */} 
 
             {/* Auth Pages */}
-            {/* <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} /> */}
+             <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} /> 
           </Routes>
         </div>
 

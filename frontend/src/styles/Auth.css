@@ -1,0 +1,207 @@
+.auth-container { display: flex; justify-content: center; align-items: center; height: 117vh; flex-direction: column; }
+
+
+/* Add this inside Auth.css */
+.auth-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -150px;
+  background: #0064006e; /* soft green */
+  border-radius: 50%;
+  animation: rise 20s infinite ease-in;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -150px;
+  background: rgba(0, 100, 0, 0.3); /* dark green with transparency */
+  border-radius: 50%;
+  animation: rise linear infinite;
+  opacity: 0.7;
+}
+
+/* Keyframes for floating */
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-120vh) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Bubble variations */
+.bubble:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  left: 20%;
+  animation-duration: 18s;
+  animation-delay: 0s;
+}
+
+.bubble:nth-child(2) {
+  width: 60px;
+  height: 60px;
+  left: 40%;
+  animation-duration: 22s;
+  animation-delay: 4.2s;
+}
+
+.bubble:nth-child(3) {
+  width: 100px;
+  height: 100px;
+  left: 65%;
+  animation-duration: 25s;
+  animation-delay: 2s;
+}
+
+.bubble:nth-child(4) {
+  width: 50px;
+  height: 50px;
+  left: 80%;
+  animation-duration: 28s;
+  animation-delay: 6s;
+}
+
+.bubble:nth-child(5) {
+  width: 120px;
+  height: 120px;
+  left: 10%;
+  animation-duration: 30s;
+  animation-delay: 5s;
+}
+
+.bubble:nth-child(6) {
+  width: 70px;
+  height: 70px;
+  left: 55%;
+  animation-duration: 26s;
+  animation-delay: 3s;
+}
+
+.bubble:nth-child(7) {
+  width: 90px;
+  height: 90px;
+  left: 35%;
+  animation-duration: 32s;
+  animation-delay: 10s;
+}
+
+.bubble:nth-child(8) {
+  width: 40px;
+  height: 40px;
+  left: 75%;
+  animation-duration: 20s;
+  animation-delay: 7s;
+}
+
+
+@keyframes rise {
+  0% { transform: translateY(0) scale(1); opacity: 0.5; }
+  50% { transform: translateY(-50vh) scale(1.2); opacity: 0.8; }
+  100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+}
+
+
+.back-home {
+    margin-top: 80px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.auth-box  {
+    margin-top: 5px;
+  width: 350px;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  
+}
+
+.auth-boxs  {
+    margin-top: 89px;
+  width: 350px;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  height: 566px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  width: 80px;
+  margin-bottom: 15px;
+}
+
+form input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.password-input {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.password-input input {
+  width: 100%;
+  padding-right: 35px;
+}
+
+.password-input span {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.google-auth {
+  margin-top: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: white;
+}
+@media (max-width: 768px) {
+  .auth-container{
+    height: 100vh;
+  }
+}

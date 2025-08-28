@@ -88,14 +88,15 @@ const handleSubmit = (e) => {
           Reach out with your details, and we’ll be in touch soon
         </h2>
         <h2
-          className="contact-heading"
+          className="about-heading"
           style={{
-            fontSize: "40px",
-            fontWeight: "700",
-            marginBottom: "20px",
-            position: "relative",
-            display: "inline-block",
-            color: "#222",
+             fontSize: "40px",
+              fontWeight: "700",
+              color: "#333",
+              marginBottom: "20px",
+              display: "inline-block",
+              position: "relative",
+              cursor: "pointer",
           }}
         >
           Contact Us
@@ -203,21 +204,20 @@ const handleSubmit = (e) => {
     alignItems: "center",
     gap: "20px",
     /* remove this line: minHeight: "100vh" */
-  },
-          .contact-heading::after {
-           
+  },.about-heading::after {
             content: "";
             position: absolute;
+            left: 0;
+            bottom: -5px;
             width: 0;
             height: 3px;
-            left: 0;
-            bottom: -6px;
             background-color: #B2B596;
             transition: width 0.3s ease;
           }
-          .contact-heading:hover::after {
+          .about-heading:hover::after {
             width: 100%;
           }
+
 
           /* Glassmorphic form */
           .glass-form {
