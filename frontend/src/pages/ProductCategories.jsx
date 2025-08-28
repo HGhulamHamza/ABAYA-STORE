@@ -41,8 +41,8 @@ const ProductCategories = () => {
             <div
               key={index}
               style={styles.card}
-              onMouseEnter={() => isMobile && setHoverIndex(index)}
-              onMouseLeave={() => isMobile && setHoverIndex(null)}
+              onMouseEnter={() => setHoverIndex(index)}
+              onMouseLeave={() =>  setHoverIndex(null)}
             >
               <img src={cat.image} alt={cat.name} style={styles.image} />
 
