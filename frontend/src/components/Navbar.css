@@ -1,0 +1,125 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #ffffff00;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.navbar-logo img {
+  height: 55px;
+  border-radius: 12px;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 35px;
+}
+
+.navbar-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  padding: 8px 40px 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  outline: none;
+  font-size: 14px;
+}
+
+.search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+}
+
+.cart-icon {
+  font-size: 22px;
+  color: #666;
+  cursor: pointer;
+}
+
+.signup-btn {
+  padding: 8px 18px;
+  background: #006400;
+  color: #F5F5DC;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+/* ✅ Mobile Fix */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 20px;
+  }
+
+  .navbar-links {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 200px;
+    background: #fff;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    display: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .navbar-right .search-box {
+    display: none; /* keep search hidden on mobile */
+  }
+
+  /* ✅ Show signup button in mobile */
+  .navbar-right .signup-btn {
+    display: inline-block;
+    margin-right: 10px; /* proper gap before cart icon */
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+}

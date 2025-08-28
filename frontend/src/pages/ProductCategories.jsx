@@ -29,7 +29,7 @@ const ProductCategories = () => {
 
   return (
     <>
-      <Navbar />
+     
       <div style={styles.container}>
         <h1 className="category-heading">ABAYA CATEGORIES</h1>
         <p style={styles.subHeading}>

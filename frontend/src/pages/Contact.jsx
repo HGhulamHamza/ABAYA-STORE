@@ -56,15 +56,17 @@ const handleSubmit = (e) => {
   return (
     <div
       style={{
-        marginTop:"20px",
+    
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "80px 8%",
+       
         background: "#F5F5DC",
         gap: "60px",
         flexWrap: "wrap",
-        minHeight: "100vh",
+        padding: "60px 5%",
+         minHeight: "auto",
+
         fontFamily: "'Lato', sans-serif",
       }}
     >
@@ -192,7 +194,16 @@ const handleSubmit = (e) => {
         {`
         
           @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
-
+            container: {
+    padding: "80px 8%",
+    backgroundColor: "#fdfbf7",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "20px",
+    /* remove this line: minHeight: "100vh" */
+  },
           .contact-heading::after {
            
             content: "";
@@ -269,6 +280,18 @@ const handleSubmit = (e) => {
               gap: 40px !important;
               align-items: stretch !important;
             }
+              @media (max-width: 768px) {
+  .glass-form {
+    padding: 30px 20px !important;
+  }
+    @media (max-width: 768px) {
+  .contact-container {
+    padding: 40px 15px !important;  /* shrink padding */
+  }
+}
+
+}
+
           }
         `}
       </style>

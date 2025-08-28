@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 function About() {
   return (
     <div>
-      <Navbar />
+     
 
       <div
         style={{
@@ -13,7 +13,8 @@ function About() {
           alignItems: "center",
           justifyContent: "space-between",
           minHeight: "100vh",
-          padding: "100px 8%",
+          padding: "100px 5%",
+
           backgroundColor: "#F5F5DC", // Beige background
           flexWrap: "wrap",
         }}
@@ -134,6 +135,12 @@ function About() {
             transform: scale(1.02);
             box-shadow: 0 8px 25px rgba(0,0,0,0.2);
           }
+            @media (max-width: 768px) {
+  .about-container {
+    padding: 60px 15px !important; /* no side gaps */
+  }
+}
+
         `}
       </style>
     </div>

@@ -7,8 +7,32 @@ body {
   background-color: #fff;
   color: #333;
 }
-
-h1, h2, h3, h4, h5, h6, button {
-  font-family: 'Poppins', sans-serif;
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
 }
+
+section, div, footer {
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; /* pushes footer to the bottom */
+}
+
+
 
