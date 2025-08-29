@@ -120,9 +120,9 @@ const styles = {
   },
   card: {
     position: "relative",
-    width: "100%",
-    maxWidth: "220px",
-    height: "320px",
+    width: "90%",
+    maxWidth: "200px",
+    height: "370px",
     borderRadius: "12px",
     overflow: "hidden",
     cursor: "pointer",
@@ -153,6 +153,7 @@ const styles = {
     fontWeight: "600",
     color: "#fff", // white text over #B2B596 bg
   },
+  
 };
 
 export default ProductCategories;
