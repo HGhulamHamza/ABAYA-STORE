@@ -83,6 +83,7 @@ const handleSubmit = (e) => {
             fontWeight: "600",
             color: "#006400",
             marginBottom: "10px",
+            marginTop:"40px"
           }}
         >
           Reach out with your details, and we’ll be in touch soon

@@ -23,7 +23,7 @@ const ProductCategories = () => {
     { name: "Hijab & Niqab Sets", image: "/8.jpg" },
     { name: "Hijab & Under Cap Sets", image: "/9.jpg" },
     { name: "Niqabs", image: "/6.jpg" },
-    { name: "Accessories", image: "/placeholder9.jpg" },
+    { name: "Accessories", image: "/" },
     { name: "Winter Collection", image: "/7.jpg" },
   ];
 
