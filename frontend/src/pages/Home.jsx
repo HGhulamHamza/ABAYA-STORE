@@ -189,11 +189,13 @@ function Home() {
           /* Mobile Responsive */
           @media (max-width: 768px) {
 
-          .home{
-          margin-top:-60px;
-          padding:0;
-          wodth:110%;
-        }
+          .home {
+        margin-top: -60px;
+          padding: 0;
+       width: 100%;  
+      overflow-x: hidden; 
+}
+
             .hero-container {
               height: 80vh;
               
@@ -224,12 +226,10 @@ function Home() {
           }
 
          @media (max-width: 768px) {
-  .home {
-    margin-top: -60px;
-    padding: 0;
-    width: 100%;       /* ✅ make sure it fits screen */
-    overflow-x: hidden; /* ✅ prevent horizontal scroll/whitespace */
-  }
+.swiper, .swiper-slide {
+  width: 100% !important;
+}
+
 
   .hero-container {
     height: 80vh;
@@ -246,6 +246,16 @@ function Home() {
     font-size: 16px;
     padding: 10px 20px;
   }
+    @media (max-width: 768px) {
+  .hero-slide {
+    padding: 0 10px;   /* safe padding without overflow */
+  }
+}
+  .swiper, .swiper-wrapper, .swiper-slide {
+  max-width: 100% !important;
+}
+
+
 }
 
 

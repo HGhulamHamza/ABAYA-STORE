@@ -35,4 +35,33 @@ main {
 }
 
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden; /* ✅ stops any accidental horizontal scroll */
+}
+
+
+element.style {
+    display: flex
+;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Fix injected padding on flex containers */
+
+@media (max-width: 800px) {
+  html body .app-container {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+
 

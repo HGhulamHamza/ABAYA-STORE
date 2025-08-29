@@ -1,12 +1,31 @@
 .auth-container { display: flex; justify-content: center; align-items: center; height: 117vh; flex-direction: column; }
 
 
+
+
+.google-auth svg {
+  flex-shrink: 0;
+}
+
 /* Add this inside Auth.css */
 .auth-container {
   position: relative;
   overflow: hidden;
 }
+/* Sign Up link style */
+.signup-link {
+  color: #006400;
+  font-weight: bold;
+  text-decoration: none;
+}
 
+.signup-link:hover {
+  text-decoration: none; /* no underline */
+}
+
+.last{
+  margin-top: 10px;
+}
 .bubble {
   position: absolute;
   bottom: -150px;
@@ -137,7 +156,7 @@
   padding: 30px;
   border-radius: 15px;
   text-align: center;
-  height: 566px;
+  height: 516px;
 }
 
 .glass-card {
@@ -151,6 +170,7 @@
   width: 80px;
   margin-bottom: 15px;
 }
+
 
 form input {
   width: 100%;

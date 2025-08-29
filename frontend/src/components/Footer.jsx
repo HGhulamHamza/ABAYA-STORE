@@ -159,6 +159,17 @@ function Footer() {
               flex-direction: column;
               text-align: center;
             }
+              .footer {
+       width: 100%;
+  overflow-x: hidden;
+  @media (max-width: 480px) {
+  .footer {
+    padding: 20px 15px; /* fixed px padding avoids overflow */
+  }
+}
+
+}   
+
           }
         `}
       </style>

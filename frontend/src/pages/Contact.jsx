@@ -123,6 +123,7 @@ const handleSubmit = (e) => {
         style={{ flex: 1, minWidth: "320px" }}
       >
         <form className="glass-form" onSubmit={handleSubmit}>
+          
           <input
             type="text"
             placeholder="Your Name"
