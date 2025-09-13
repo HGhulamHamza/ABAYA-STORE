@@ -29,7 +29,7 @@ const Login = () => {
     };
 
     try {
-      const res = await axios.post("http://localhost:5000/login", formData);
+      const res = await axios.post("https://abaya-store-omkn.vercel.app/login", formData);
       localStorage.setItem("token", res.data.token);
 
       setMessage("User logged in");

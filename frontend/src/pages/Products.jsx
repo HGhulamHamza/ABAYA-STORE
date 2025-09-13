@@ -19,7 +19,7 @@ const Products = () => {
 
     setLoading(true);
     fetch(
-      `http://localhost:5000/api/products/category/${encodeURIComponent(
+      `https://abaya-store-omkn.vercel.app/api/products/category/${encodeURIComponent(
         categoryName
       )}`
     )

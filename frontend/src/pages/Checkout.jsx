@@ -62,7 +62,7 @@ const Checkout = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/order", {
+      const response = await fetch("https://abaya-store-omkn.vercel.app/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, cart, subtotal, shippingFee, total }),
