@@ -119,6 +119,10 @@ app.post("/order", async (req, res) => {
 
 // ✅ Register product routes
 app.use("/api", productRoutes);
+app.get("/", (req, res) => {
+  res.send("API is running ✅");
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
