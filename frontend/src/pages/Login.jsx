@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { app } from "../firebase.js"; // ✅ your firebase.js file
+import { app } from "../firebase.js";
 import "../styles/Auth.css";
+import Navbar from "../components/Navbar.jsx";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +37,9 @@ const Login = () => {
       setOpen(true);
 
       setTimeout(() => {
-        navigate("/");
+        const redirectPath = localStorage.getItem("redirectAfterLogin") || "/";
+        localStorage.removeItem("redirectAfterLogin");
+        navigate(redirectPath);
       }, 1500);
     } catch (err) {
       setMessage(err.response?.data?.msg || "Login failed");
@@ -63,7 +66,9 @@ const Login = () => {
       setOpen(true);
 
       setTimeout(() => {
-        navigate("/");
+        const redirectPath = localStorage.getItem("redirectAfterLogin") || "/";
+        localStorage.removeItem("redirectAfterLogin");
+        navigate(redirectPath);
       }, 1500);
     } catch (error) {
       setMessage(error.message || "Google login failed");
@@ -72,8 +77,19 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    const loginMessage = localStorage.getItem("loginMessage");
+    if (loginMessage) {
+      setMessage(loginMessage);
+      setSeverity("warning");
+      setOpen(true);
+      localStorage.removeItem("loginMessage");
+    }
+  }, []);
+
   return (
     <div className="auth-container" style={{ backgroundColor: "#F5F5DC" }}>
+      <Navbar />
       <div className="bubble"></div><div className="bubble"></div>
       <div className="bubble"></div><div className="bubble"></div>
       <div className="bubble"></div><div className="bubble"></div>
@@ -97,7 +113,7 @@ const Login = () => {
           <button type="submit" className="bt">Login</button>
         </form>
 
-        {/* ✅ Google Auth (like client project) */}
+        {/* Google Auth */}
         <div className="google-auth" onClick={handleGoogleLogin}>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 488 512">
             <path fill="#4285F4" d="M488 261.8c0-17.8-1.5-35.6-4.8-52.9H249v99.9h134.7c-5.8 31.2-23.4 57.6-49.7 75.3v62.7h80.4c47.2-43.4 73.6-107.5 73.6-185z"/>

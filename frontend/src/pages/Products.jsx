@@ -1,172 +1,246 @@
-// src/pages/ProductCategory.jsx
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  Typography,
-  Container,
-  Box,
-  IconButton,
-  TextField,
-  InputAdornment,
-  Snackbar,
-  Alert,
-} from "@mui/material";
-import { Search, ShoppingCart } from "@mui/icons-material";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { FaShoppingCart } from "react-icons/fa";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import { useParams, useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const Products = () => {
-  const { category } = useParams();
-  const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState("");
+  const { categoryName } = useParams();
   const [products, setProducts] = useState([]);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [snackbar, setSnackbar] = useState({ open: false, message: "" });
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // ✅ Dummy products
-  const dummyProducts = [
-    { id: 1, title: "Classic Black Abaya", price: "Rs 3500", image: "/abaya1.jpg" },
-    { id: 2, title: "Elegant Embroidered Abaya", price: "Rs 4200", image: "/abaya2.jpg" },
-    { id: 3, title: "Open Front Abaya", price: "Rs 3900", image: "/abaya3.jpg" },
-    { id: 4, title: "Modern Pleated Abaya", price: "Rs 4100", image: "/abaya4.jpg" },
-    { id: 5, title: "Chiffon Sleeve Abaya", price: "Rs 3800", image: "/abaya5.jpg" },
-    { id: 6, title: "Casual Everyday Abaya", price: "Rs 3200", image: "/abaya6.jpg" },
-    { id: 7, title: "Luxury Party Abaya", price: "Rs 5000", image: "/abaya7.jpg" },
-    { id: 8, title: "Minimalist Abaya", price: "Rs 3400", image: "/abaya8.jpg" },
-    { id: 9, title: "Printed Abaya", price: "Rs 3700", image: "/abaya9.jpg" },
-    { id: 10, title: "Two-Tone Abaya", price: "Rs 3600", image: "/abaya10.jpg" },
-  ];
-
+  // ✅ Fetch products by category
   useEffect(() => {
-    setProducts(dummyProducts);
-  }, [category]);
+    if (!categoryName) return;
 
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      const filtered = dummyProducts.filter((p) =>
-        p.title.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setProducts(filtered);
+    setLoading(true);
+    fetch(
+      `http://localhost:5000/api/products/category/${encodeURIComponent(
+        categoryName
+      )}`
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch products");
+        return res.json();
+      })
+      .then((data) => setProducts(data))
+      .catch((err) => console.error("Error fetching products:", err))
+      .finally(() => setLoading(false));
+  }, [categoryName]);
+
+  const handleClose = () => setSnackbar({ ...snackbar, open: false });
+
+  const addToCart = (product) => {
+    // ✅ Get existing cart
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // ✅ Check if item already exists
+    const existingIndex = cart.findIndex((item) => item._id === product._id);
+    if (existingIndex !== -1) {
+      cart[existingIndex].quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
     }
+
+    // ✅ Save updated cart
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // ✅ Snackbar feedback
+    setSnackbar({ open: true, message: "Successfully added to cart!" });
   };
 
-  const handleAddToCart = () => {
-    setSnackbarOpen(true);
-  };
+  const filteredProducts = products.filter((product) =>
+    (product.name || "").toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <Container sx={{ mt: 12, mb: 6 }}>
-      {/* Category Title */}
-      <Typography
-        variant="h4"
-        align="center"
-        sx={{ fontWeight: "700", color: "#333", mb: 6 }}
-      >
-        {decodeURIComponent(category) || "Products"}
-      </Typography>
+    <div style={styles.container}>
+      <Navbar />
+      <h2 style={styles.heading}>{categoryName || "Our Products"}</h2>
 
-      {/* Search Bar */}
-      <Box display="flex" justifyContent="center" sx={{ mb: 6 }}>
-        <TextField
-          variant="outlined"
-          placeholder="Search abayas..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyDown={handleSearch}
-          sx={{
-            width: { xs: "90%", sm: "60%", md: "40%" },
-            backgroundColor: "#fff",
-            borderRadius: 3,
-            boxShadow: "0 3px 6px rgba(0,0,0,0.1)",
-          }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search color="disabled" />
-              </InputAdornment>
-            ),
-          }}
+      {/* Search bar */}
+      <div style={styles.searchBar}>
+        <input
+          type="text"
+          placeholder={`Search in ${categoryName || "products"}...`}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          style={styles.searchInput}
         />
-      </Box>
+      </div>
 
-      {/* Product Grid */}
-      <Box
-        display="grid"
-        gridTemplateColumns={{ xs: "1fr", sm: "1fr 1fr", md: "1fr 1fr 1fr 1fr" }}
-        gap={4}
-      >
-        {products.map((product) => (
-          <motion.div
-            key={product.id}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            style={{
-              background: "#fff",
-              borderRadius: "16px",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "column",
-              height: "370px", // ✅ uniform height
-              transition: "0.3s",
-            }}
-          >
-            {/* Image */}
-            <Box
-              component="img"
-              src={product.image}
-              alt={product.title}
-              sx={{
-                width: "100%",
-                height: "200px",
-                objectFit: "cover",
-              }}
-              onClick={() => navigate(`/product/${product.id}`)}
-            />
+      {loading ? (
+        <div style={styles.loaderWrapper}>
+          <div className="scarf-loader"></div>
+          <p style={{ marginTop: "15px", color: "#5c4033", fontWeight: "600" }}>
+            Loading {categoryName}...
+          </p>
+        </div>
+      ) : (
+        <div style={styles.grid}>
+          {filteredProducts.map((product) => (
+            <div
+              key={product._id}
+              style={styles.card}
+              onClick={() => navigate(`/product/${product._id}`)}
+            >
+              <img
+                src={product.image || "https://via.placeholder.com/250"}
+                alt={product.name || "Product"}
+                style={styles.image}
+              />
 
-            {/* Content */}
-            <Box p={2} display="flex" flexDirection="column" justifyContent="flex-end" flexGrow={1}>
-              <Box>
-                {/* Title */}
-                <Typography
-                  variant="subtitle1"
-                  sx={{
-                    fontWeight: "600",
-                    color: "#333",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
+              <h3 style={styles.title}>{product.name || "Unnamed Product"}</h3>
+
+              <div style={styles.priceCart}>
+                <p style={styles.price}>
+                  {product.price ? `Rs ${product.price}` : "Price N/A"}
+                </p>
+                <FaShoppingCart
+                  style={styles.cartIcon}
+                  onClick={(e) => {
+                    e.stopPropagation(); // ✅ Prevent card navigation
+                    addToCart(product);  // ✅ Save to localStorage
                   }}
-                >
-                  {product.title}
-                </Typography>
+                />
+              </div>
+            </div>
+          ))}
 
-                {/* Price + Cart */}
-                <Box mt={1} display="flex" justifyContent="space-between" alignItems="center">
-                  <Typography variant="h6" sx={{ fontWeight: "700", color: "#006400" }}>
-                    {product.price}
-                  </Typography>
-                  <IconButton onClick={handleAddToCart}>
-                    <ShoppingCart sx={{ color: "#006400" }} />
-                  </IconButton>
-                </Box>
-              </Box>
-            </Box>
-          </motion.div>
-        ))}
-      </Box>
+          {!loading && filteredProducts.length === 0 && (
+            <p style={styles.noProducts}>
+              No products available in this category.
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Snackbar */}
       <Snackbar
-        open={snackbarOpen}
+        open={snackbar.open}
         autoHideDuration={3000}
-        onClose={() => setSnackbarOpen(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
-          Abaya added to cart successfully!
-        </Alert>
+        <MuiAlert
+          onClose={handleClose}
+          severity="success"
+          sx={{ width: "100%", backgroundColor: "#4CAF50", color: "#fff" }}
+        >
+          {snackbar.message}
+        </MuiAlert>
       </Snackbar>
-    </Container>
+
+      <style>
+        {`
+          .scarf-loader {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #d2b48c;
+            border-top: 6px solid #5c4033;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+          }
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}
+      </style>
+    </div>
   );
+};
+
+const styles = {
+  container: { maxWidth: "1200px", margin: "40px auto", padding: "20px" },
+  heading: {
+    textAlign: "center",
+    fontSize: "28px",
+    fontWeight: "bold",
+    marginTop: "60px",
+    marginBottom: "30px",
+    color: "#333",
+  },
+  searchBar: {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "40px",
+  },
+  searchInput: {
+    width: "50%",
+    padding: "12px 16px",
+    border: "1px solid #ccc",
+    borderRadius: "25px",
+    fontSize: "16px",
+    outline: "none",
+  },
+  loaderWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    marginTop: "50px",
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 280px))",
+    justifyContent: "center",
+    gap: "25px",
+  },
+  card: {
+    background: "#fff",
+    borderRadius: "15px",
+    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.08)",
+    overflow: "hidden",
+    transition: "all 0.2s ease",
+    cursor: "pointer",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    minHeight: "380px",
+    width: "100%",
+    maxWidth: "280px",
+    margin: "0 auto",
+  },
+  image: {
+    width: "100%",
+    height: "250px",
+    objectFit: "cover",
+    background: "#f4f4f4",
+  },
+  title: {
+    fontSize: "18px",
+    fontWeight: "600",
+    color: "#333",
+    margin: "15px 20px 5px",
+  },
+  priceCart: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "15px 20px 20px",
+  },
+  price: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    color: "#2e7d32",
+    margin: 0,
+  },
+  cartIcon: {
+    fontSize: "22px",
+    color: "#555",
+    cursor: "pointer",
+    transition: "color 0.2s ease",
+  },
+  noProducts: {
+    gridColumn: "1 / -1",
+    textAlign: "center",
+    fontSize: "16px",
+    color: "#888",
+  },
 };
 
 export default Products;

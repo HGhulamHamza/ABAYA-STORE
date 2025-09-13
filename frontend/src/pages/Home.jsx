@@ -13,6 +13,7 @@ import HeroImg3 from "../../public/H3.jpg";
 import Footer from "../components/Footer";
 import Contact from "../pages/Contact";
 import ProductCategories from "./ProductCategories";
+import { Link } from "react-router-dom"; // ✅ added import
 
 function Home() {
   const slides = [
@@ -74,7 +75,9 @@ function Home() {
                 <div className="hero-text">
                   <h1>{slide.title}</h1>
                   <p>{slide.tagline}</p>
-                  <button>{slide.button}</button>
+                  <Link to="/products">
+                    <button>{slide.button}</button>
+                  </Link>
                 </div>
               </div>
             </SwiperSlide>
@@ -154,22 +157,20 @@ function Home() {
             color: #F5F5DC;
           }
 
-         .hero-text button {
-  background-color: #006400;
-  color: #F5F5DC;
-  padding: 12px 26px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 18px;
-  transition: all 0.3s ease;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
-  
-  width: 180px;   /* ✅ fixed size for consistency */
-  text-align: center;
-}
-
+          .hero-text button {
+            background-color: #006400;
+            color: #F5F5DC;
+            padding: 12px 26px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+            width: 180px;   /* ✅ fixed size for consistency */
+            text-align: center;
+          }
 
           /* Swiper buttons & bullets */
           .swiper-button-prev,
@@ -188,17 +189,15 @@ function Home() {
 
           /* Mobile Responsive */
           @media (max-width: 768px) {
-
-          .home {
-        margin-top: -60px;
-          padding: 0;
-       width: 100%;  
-      overflow-x: hidden; 
-}
+            .home {
+              margin-top: -60px;
+              padding: 0;
+              width: 100%;  
+              overflow-x: hidden; 
+            }
 
             .hero-container {
               height: 80vh;
-              
             }
 
             .hero-slide {
@@ -225,40 +224,35 @@ function Home() {
             }
           }
 
-         @media (max-width: 768px) {
-.swiper, .swiper-slide {
-  width: 100% !important;
-}
+          @media (max-width: 768px) {
+            .swiper, .swiper-slide {
+              width: 100% !important;
+            }
 
+            .hero-container {
+              height: 80vh;
+              width: 100%;       /* ✅ ensure hero fills full width */
+            }
 
-  .hero-container {
-    height: 80vh;
-    width: 100%;       /* ✅ ensure hero fills full width */
-  }
+            .hero-slide {
+              width: 100%;       /* ✅ ensure slide covers screen */
+            }
+          }
 
-  .hero-slide {
-    width: 100%;       /* ✅ ensure slide covers screen */
-  }
-}
-  @media (max-width: 768px) {
-  .hero-text button {
-    width: 140px;  /* ✅ slightly smaller on mobile */
-    font-size: 16px;
-    padding: 10px 20px;
-  }
-    @media (max-width: 768px) {
-  .hero-slide {
-    padding: 0 10px;   /* safe padding without overflow */
-  }
-}
-  .swiper, .swiper-wrapper, .swiper-slide {
-  max-width: 100% !important;
-}
-
-
-}
-
-
+          @media (max-width: 768px) {
+            .hero-text button {
+              width: 140px;  /* ✅ slightly smaller on mobile */
+              font-size: 16px;
+              padding: 10px 20px;
+            }
+            @media (max-width: 768px) {
+              .hero-slide {
+                padding: 0 10px;   /* safe padding without overflow */
+              }
+            }
+            .swiper, .swiper-wrapper, .swiper-slide {
+              max-width: 100% !important;
+            }
           }
         `}
       </style>

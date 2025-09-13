@@ -1,101 +1,124 @@
-// src/pages/ProductCategories.jsx
-import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProductCategories = () => {
   const [hoverIndex, setHoverIndex] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const navigate = useNavigate();
 
   const categories = [
     { name: "Daily Wear Abayas", image: "/1.jpg" },
     { name: "Exclusive Collection", image: "/2.jpg" },
     { name: "Wedding Abayas", image: "/3.jpg" },
-    { name: "Georgette Hijabs", image: "/5.jpg" },
     { name: "Hijabs", image: "/4.jpg" },
     { name: "Hijab & Niqab Sets", image: "/8.jpg" },
     { name: "Hijab & Under Cap Sets", image: "/9.jpg" },
     { name: "Niqabs", image: "/6.jpg" },
-    { name: "Accessories", image: "/" },
+    { name: "Accessories", image: "/8/3.jpg" },
     { name: "Winter Collection", image: "/7.jpg" },
   ];
 
+  const handleClick = (category) => {
+    navigate(`/catproducts/${encodeURIComponent(category)}`);
+  };
+
   return (
-    <>
-     
-      <div style={styles.container}>
-        <h1 className="category-heading">ABAYA CATEGORIES</h1>
-        <p style={styles.subHeading}>
-          Discover timeless elegance — explore our abayas, hijabs, niqabs, and accessories.
-        </p>
+    <div style={styles.container}>
+      {/* Title with left margin + hover underline */}
+      <h1 className="category-heading">PRODUCT CATEGORIES</h1>
 
-        <div style={styles.cardContainer}>
-          {categories.map((cat, index) => (
+      {/* Subheading */}
+      <p style={styles.subHeading}>
+        Discover timeless elegance — explore our abayas, hijabs, niqabs, and accessories.
+      </p>
+
+      <div style={styles.grid} className="categories-grid">
+        {categories.map((cat, index) => (
+          <div
+            key={index}
+            style={{
+              ...styles.card,
+              marginLeft: index >= 5 ? "40px" : "0px", // ✅ shift second row slightly right
+            }}
+            className="category-card"
+            onMouseEnter={() => setHoverIndex(index)}
+            onMouseLeave={() => setHoverIndex(null)}
+            onClick={() => {
+              // ✅ show overlay on tap in mobile
+              setHoverIndex((prev) => (prev === index ? null : index));
+              // navigate to category page
+              handleClick(cat.name);
+            }}
+            onTouchStart={() =>
+              setHoverIndex((prev) => (prev === index ? null : index))
+            }
+          >
+            <img src={cat.image} alt={cat.name} style={styles.image} />
             <div
-              key={index}
-              style={styles.card}
-              onMouseEnter={() => setHoverIndex(index)}
-              onMouseLeave={() =>  setHoverIndex(null)}
+              style={{
+                ...styles.overlay,
+                background: "#B2B596",
+                transform:
+                  hoverIndex === index ? "translateY(0)" : "translateY(100%)",
+                opacity: hoverIndex === index ? 1 : 0,
+              }}
             >
-              <img src={cat.image} alt={cat.name} style={styles.image} />
-
-              {/* ✅ Bottom overlay animation only */}
-              <div
-                style={{
-                  ...styles.overlay,
-                  background: "#B2B596", // new background
-                  transform: hoverIndex === index ? "translateY(0)" : "translateY(100%)",
-                  opacity: hoverIndex === index ? 1 : 0,
-                }}
-              >
-                <h3 style={styles.overlayText}>{cat.name}</h3>
-              </div>
+              <h3 style={styles.overlayText}>{cat.name}</h3>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
-      {/* ✅ Footer only once */}
-      {/* <Footer /> */}
-
+      {/* Scoped CSS */}
       <style>
         {`
-          @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
-
           .category-heading {
-            font-size: 40px;
+            font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 20px;
             position: relative;
             display: inline-block;
-            color: #222;
-            font-family: 'Lato', sans-serif;
+            cursor: pointer;
+            margin-right: -10px;
+            margin-bottom: 25px;
           }
 
           .category-heading::after {
             content: "";
             position: absolute;
-            width: 0;
-            height: 3px;
             left: 0;
-            bottom: -6px;
-            background-color: #B2B596;
-            transition: width 0.3s ease;
+            bottom: -5px;
+            width: 0%;
+            height: 3px;
+            background-color: #666666;
+            transition: width 0.3s ease-in-out;
           }
 
           .category-heading:hover::after {
             width: 100%;
           }
+
+          @media (max-width: 768px) {
+            .category-heading {
+              font-size: 1.5rem;
+              margin-left: 20px;
+              margin-bottom: 20px;
+            }
+
+            /* ✅ Grid: 1 card per row */
+            .categories-grid {
+              grid-template-columns: 1fr !important;
+              gap: 20px;
+            }
+
+            /* ✅ Card resize + reset margin-left */
+            .category-card {
+              max-width: 90% !important;
+              height: 280px !important;
+              margin: 0 auto !important; /* center horizontally */
+            }
+          }
         `}
       </style>
-    </>
+    </div>
   );
 };
 
@@ -112,11 +135,12 @@ const styles = {
     marginBottom: "40px",
     fontFamily: "'Lato', sans-serif",
   },
-  cardContainer: {
+  grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-    gap: "25px",
+    gridTemplateColumns: "repeat(5, 1fr)", // ✅ desktop: 5 cards
+    gap: "30px",
     justifyItems: "center",
+    flexWrap: "wrap",
   },
   card: {
     position: "relative",
@@ -127,6 +151,7 @@ const styles = {
     overflow: "hidden",
     cursor: "pointer",
     boxShadow: "0 6px 15px rgba(0,0,0,0.1)",
+    transition: "transform 0.3s ease",
   },
   image: {
     width: "100%",
@@ -149,11 +174,10 @@ const styles = {
   overlayText: {
     margin: 0,
     fontFamily: "'Lato', sans-serif",
-    fontSize: "0.9rem", // smaller font
+    fontSize: "0.9rem",
     fontWeight: "600",
-    color: "#fff", // white text over #B2B596 bg
+    color: "#fff",
   },
-  
 };
 
 export default ProductCategories;

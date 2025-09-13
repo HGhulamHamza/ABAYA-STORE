@@ -7,6 +7,7 @@ import MuiAlert from "@mui/material/Alert";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../firebase"; // ✅ your firebase.js file
 import "../styles/Auth.css";
+import Navbar from "../components/Navbar";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -65,6 +66,7 @@ const Signup = () => {
 
   return (
     <div className="auth-container" style={{ backgroundColor: "#F5F5DC" }}>
+      <Navbar/>
       <div className="bubble"></div><div className="bubble"></div>
       <div className="bubble"></div><div className="bubble"></div>
       <div className="bubble"></div><div className="bubble"></div>
