@@ -19,7 +19,7 @@ const Products = () => {
 
     setLoading(true);
    fetch(
-  `https://abaya-store-production.up.railway.app/api/products/category/${encodeURIComponent(
+  `https://abaya-store-production-bbd4.up.railway.app/api/products/category/${encodeURIComponent(
     categoryName
   )}`
 )

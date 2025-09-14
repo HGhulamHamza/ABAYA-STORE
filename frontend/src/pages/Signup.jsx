@@ -48,7 +48,7 @@ const Signup = () => {
       const user = result.user;
 
      await axios.post(
-  "https://abaya-store-production.up.railway.app/google-signup",
+  "https://abaya-store-production-bbd4.up.railway.app/google-signup",
   {
     name: user.displayName,
     email: user.email,

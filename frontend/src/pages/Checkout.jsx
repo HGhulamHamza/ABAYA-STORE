@@ -63,7 +63,7 @@ const Checkout = () => {
 
     try {
       const response = await fetch(
-  "https://abaya-store-production.up.railway.app/order",
+  "https://abaya-store-production-bbd4.up.railway.app/order",
   {
     method: "POST",
     headers: { "Content-Type": "application/json" },

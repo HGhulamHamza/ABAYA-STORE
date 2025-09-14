@@ -17,7 +17,7 @@ const ProductDetails = () => {
   useEffect(() => {
   axios
   .get(
-    `https://abaya-store-production.up.railway.app/api/products/${id}`
+    `https://abaya-store-production-bbd4.up.railway.app/api/products/${id}`
   )
   .then((res) => {
     setProduct(res.data);
