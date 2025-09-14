@@ -13,10 +13,7 @@ const app = express();
 app.use(express.json());
 // Before routes
 app.use(cors({
-  origin: "https://abaya-store-omega.vercel.app",  // ✅ no slash
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+ 
 }));
 
 
