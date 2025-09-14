@@ -16,7 +16,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`https://abaya-store-omkn.vercel.app/api/products/${id}`)
+      .get(`https://abaya-store-m2t2.vercel.app/api/products/${id}`)
       .then((res) => {
         setProduct(res.data);
         setMainImage(res.data.image);

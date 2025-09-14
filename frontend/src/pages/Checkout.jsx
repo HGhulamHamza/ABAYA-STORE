@@ -62,7 +62,7 @@ const Checkout = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("https://abaya-store-omkn.vercel.app/order", {
+      const response = await fetch("https://abaya-store-m2t2.vercel.app/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, cart, subtotal, shippingFee, total }),

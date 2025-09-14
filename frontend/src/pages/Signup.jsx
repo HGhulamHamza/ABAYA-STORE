@@ -47,7 +47,7 @@ const Signup = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await axios.post("https://abaya-store-omkn.vercel.app/google-signup", {
+      await axios.post("https://abaya-store-m2t2.vercel.app/google-signup", {
         name: user.displayName,
         email: user.email,
       });
