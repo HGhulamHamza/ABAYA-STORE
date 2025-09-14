@@ -11,7 +11,12 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+// Before routes
+app.use(cors({
+  origin: ["https://abaya-store-omega.vercel.app/"], // replace with your deployed frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 // 🔹 Connect MongoDB
 mongoose
