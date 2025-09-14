@@ -30,7 +30,7 @@ const Login = () => {
 
     try {
      const res = await axios.post(
-  "https://abaya-store-omkn-m6erx9r8n-hamzas-projects-5008c1de.vercel.app/login",
+  "https://abaya-store-production.up.railway.app/login",
   formData
 );
 

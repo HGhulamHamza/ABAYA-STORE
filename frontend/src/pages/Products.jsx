@@ -19,7 +19,7 @@ const Products = () => {
 
     setLoading(true);
    fetch(
-  `https://abaya-store-omkn-m6erx9r8n-hamzas-projects-5008c1de.vercel.app/api/products/category/${encodeURIComponent(
+  `https://abaya-store-production.up.railway.app/api/products/category/${encodeURIComponent(
     categoryName
   )}`
 )

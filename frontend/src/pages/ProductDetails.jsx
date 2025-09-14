@@ -17,7 +17,7 @@ const ProductDetails = () => {
   useEffect(() => {
   axios
   .get(
-    `https://abaya-store-omkn-m6erx9r8n-hamzas-projects-5008c1de.vercel.app/api/products/${id}`
+    `https://abaya-store-production.up.railway.app/api/products/${id}`
   )
   .then((res) => {
     setProduct(res.data);

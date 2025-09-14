@@ -63,7 +63,7 @@ const Checkout = () => {
 
     try {
       const response = await fetch(
-  "https://abaya-store-omkn-m6erx9r8n-hamzas-projects-5008c1de.vercel.app/order",
+  "https://abaya-store-production.up.railway.app/order",
   {
     method: "POST",
     headers: { "Content-Type": "application/json" },

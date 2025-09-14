@@ -48,7 +48,7 @@ const Signup = () => {
       const user = result.user;
 
      await axios.post(
-  "https://abaya-store-omkn-m6erx9r8n-hamzas-projects-5008c1de.vercel.app/google-signup",
+  "https://abaya-store-production.up.railway.app/google-signup",
   {
     name: user.displayName,
     email: user.email,
