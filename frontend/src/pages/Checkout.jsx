@@ -62,11 +62,15 @@ const Checkout = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("https://abaya-store-cq7o-btw1569a6-hamzas-projects-5008c1de.vercel.app/order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, cart, subtotal, shippingFee, total }),
-      });
+      const response = await fetch(
+  "https://abaya-store-omkn-m6erx9r8n-hamzas-projects-5008c1de.vercel.app/order",
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...formData, cart, subtotal, shippingFee, total }),
+  }
+);
+
 
       const data = await response.json();
 

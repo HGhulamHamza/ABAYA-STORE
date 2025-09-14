@@ -18,18 +18,19 @@ const Products = () => {
     if (!categoryName) return;
 
     setLoading(true);
-    fetch(
-      `https://abaya-store-cq7o-btw1569a6-hamzas-projects-5008c1de.vercel.app/api/products/category/${encodeURIComponent(
-        categoryName
-      )}`
-    )
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch products");
-        return res.json();
-      })
-      .then((data) => setProducts(data))
-      .catch((err) => console.error("Error fetching products:", err))
-      .finally(() => setLoading(false));
+   fetch(
+  `https://abaya-store-omkn-m6erx9r8n-hamzas-projects-5008c1de.vercel.app/api/products/category/${encodeURIComponent(
+    categoryName
+  )}`
+)
+  .then((res) => {
+    if (!res.ok) throw new Error("Failed to fetch products");
+    return res.json();
+  })
+  .then((data) => setProducts(data))
+  .catch((err) => console.error("Error fetching products:", err))
+  .finally(() => setLoading(false));
+
   }, [categoryName]);
 
   const handleClose = () => setSnackbar({ ...snackbar, open: false });

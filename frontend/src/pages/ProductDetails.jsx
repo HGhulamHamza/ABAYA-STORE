@@ -15,13 +15,16 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState("");
 
   useEffect(() => {
-    axios
-      .get(`https://abaya-store-cq7o-btw1569a6-hamzas-projects-5008c1de.vercel.app/api/products/${id}`)
-      .then((res) => {
-        setProduct(res.data);
-        setMainImage(res.data.image);
-      })
-      .catch((err) => console.error(err));
+  axios
+  .get(
+    `https://abaya-store-omkn-m6erx9r8n-hamzas-projects-5008c1de.vercel.app/api/products/${id}`
+  )
+  .then((res) => {
+    setProduct(res.data);
+    setMainImage(res.data.image);
+  })
+  .catch((err) => console.error(err));
+
   }, [id]);
 
   if (!product)
