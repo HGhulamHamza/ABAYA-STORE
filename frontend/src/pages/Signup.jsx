@@ -29,7 +29,7 @@ const Signup = () => {
     };
 
     try {
-      await axios.post("http://localhost:5000/signup", formData);
+      await axios.post("https://abaya-store-production-bbd4.up.railway.app/signup", formData);
       setMessage("Account created");
       setOpen(true);
 
