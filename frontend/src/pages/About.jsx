@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 function About() {
   return (
     <div>
+      <Navbar/>
      
 
       <div

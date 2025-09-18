@@ -1,6 +1,7 @@
 // src/pages/Contact.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import Navbar from "../components/Navbar";
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -54,6 +55,8 @@ const handleSubmit = (e) => {
 
 
   return (
+    <>
+    <Navbar/>
     <div
       style={{
     
@@ -233,6 +236,7 @@ const handleSubmit = (e) => {
             -webkit-backdrop-filter: blur(12px);
             border-radius: 16px;
             padding: 50px;
+            margin-top:30px;
           }
 
           .form-input {
@@ -298,6 +302,7 @@ const handleSubmit = (e) => {
         `}
       </style>
     </div>
+    </>
   );
 }
 

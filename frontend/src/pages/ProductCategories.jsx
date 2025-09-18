@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const ProductCategories = () => {
   const [hoverIndex, setHoverIndex] = useState(null);
@@ -7,7 +8,7 @@ const ProductCategories = () => {
 
   const categories = [
     { name: "Daily Wear Abayas", image: "/1.jpg" },
-    { name: "Exclusive Collection", image: "/2.jpg" },
+    { name: "Exclusive Collection", image: "/2/1.jpg" },
     { name: "Wedding Abayas", image: "/3.jpg" },
     { name: "Hijabs", image: "/4.jpg" },
     { name: "Hijab & Niqab Sets", image: "/8.jpg" },
@@ -22,7 +23,9 @@ const ProductCategories = () => {
   };
 
   return (
+
     <div style={styles.container}>
+      <Navbar />
       {/* Title with left margin + hover underline */}
       <h1 className="category-heading">PRODUCT CATEGORIES</h1>
 
@@ -33,38 +36,21 @@ const ProductCategories = () => {
 
       <div style={styles.grid} className="categories-grid">
         {categories.map((cat, index) => (
-          <div
-            key={index}
-            style={{
-              ...styles.card,
-              marginLeft: index >= 5 ? "40px" : "0px", // ✅ shift second row slightly right
-            }}
-            className="category-card"
-            onMouseEnter={() => setHoverIndex(index)}
-            onMouseLeave={() => setHoverIndex(null)}
-            onClick={() => {
-              // ✅ show overlay on tap in mobile
-              setHoverIndex((prev) => (prev === index ? null : index));
-              // navigate to category page
-              handleClick(cat.name);
-            }}
-            onTouchStart={() =>
-              setHoverIndex((prev) => (prev === index ? null : index))
-            }
-          >
-            <img src={cat.image} alt={cat.name} style={styles.image} />
-            <div
-              style={{
-                ...styles.overlay,
-                background: "#B2B596",
-                transform:
-                  hoverIndex === index ? "translateY(0)" : "translateY(100%)",
-                opacity: hoverIndex === index ? 1 : 0,
-              }}
-            >
-              <h3 style={styles.overlayText}>{cat.name}</h3>
-            </div>
-          </div>
+      <div
+  key={index}
+  style={{
+    ...styles.card,
+    marginLeft: index >= 5 ? "40px" : "0px",
+  }}
+  className="category-card"
+  onClick={() => handleClick(cat.name)}
+>
+  <img src={cat.image} alt={cat.name} style={styles.image} />
+  <div style={styles.overlay}>
+    <h3 style={styles.overlayText}>{cat.name}</h3>
+  </div>
+</div>
+
         ))}
       </div>
 
@@ -161,16 +147,17 @@ const styles = {
     transition: "transform 0.4s ease-in-out",
   },
   overlay: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    width: "100%",
-    padding: "10px",
-    textAlign: "center",
-    transform: "translateY(100%)",
-    opacity: 0,
-    transition: "all 0.3s ease",
-  },
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  width: "100%",
+  padding: "10px",
+  textAlign: "center",
+  background: "#B2B596",   // always visible
+  transform: "translateY(0)", // no hide/show
+  opacity: 1,                // always visible
+},
+
   overlayText: {
     margin: 0,
     fontFamily: "'Lato', sans-serif",
