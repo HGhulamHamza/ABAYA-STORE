@@ -121,6 +121,7 @@ app.post("/order", async (req, res) => {
 });
 
 
+
 // ✅ Register product routes
 app.use("/api", productRoutes);
 app.get("/", (req, res) => {
