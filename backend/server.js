@@ -13,8 +13,14 @@ const app = express();
 app.use(express.json());
 // Before routes
 app.use(cors({
- 
+  origin: [
+    "https://sumptuousmodesty.com",
+    "https://www.sumptuousmodesty.com"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
+
 
 
 // 🔹 Connect MongoDB
