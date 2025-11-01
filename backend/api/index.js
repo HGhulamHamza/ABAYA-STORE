@@ -5,7 +5,9 @@ import jwt from "jsonwebtoken";
 import cors from "cors";
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
-import productRoutes from "../routes/productRoutes.js"; // ✅ correct relative path
+
+import productRoutes from "../routes/productRoutes.js";
+import orderRoutes from "../routes/orderRoutes.js"; // ✅ added
 
 dotenv.config();
 
@@ -89,7 +91,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// ✅ Nodemailer
+// ✅ Nodemailer (for direct order emails)
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -98,7 +100,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// ✅ Order email API
+// ✅ Direct order email route (admin email)
 app.post("/order", async (req, res) => {
   const { name, email, whatsapp, address, emergency, cart, subtotal } = req.body;
 
@@ -122,9 +124,7 @@ ${cart
     (item) =>
       `- ${item.name} ${
         item.selectedSize ? `(Size: ${item.selectedSize})` : ""
-      } x${item.quantity || 1} - Rs ${
-        item.price * (item.quantity || 1)
-      }`
+      } x${item.quantity || 1} - Rs ${item.price * (item.quantity || 1)}`
   )
   .join("\n")}
 
@@ -141,8 +141,9 @@ Total: Rs ${subtotal}
   }
 });
 
-// ✅ Product routes
-app.use("/api", productRoutes);
+// ✅ Product & Order routes
+app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes);
 
 // ✅ Health check
 app.get("/", (req, res) => {
