@@ -5,9 +5,8 @@ import jwt from "jsonwebtoken";
 import cors from "cors";
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
-
 import productRoutes from "../routes/productRoutes.js";
-import orderRoutes from "../routes/orderRoutes.js"; // ✅ added
+import orderRoutes from "../routes/orderRoutes.js";
 
 dotenv.config();
 
@@ -40,7 +39,11 @@ async function connectDB() {
   }
 }
 
-await connectDB();
+// ✅ Run DB connection on every request (safe in Vercel)
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 
 // ✅ User schema
 const userSchema = new mongoose.Schema({
@@ -91,7 +94,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// ✅ Nodemailer (for direct order emails)
+// ✅ Nodemailer
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -100,7 +103,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// ✅ Direct order email route (admin email)
+// ✅ Direct order email route
 app.post("/order", async (req, res) => {
   const { name, email, whatsapp, address, emergency, cart, subtotal } = req.body;
 
@@ -134,7 +137,7 @@ Total: Rs ${subtotal}
       `,
     });
 
-    res.json({ msg: "Order placed successfully, email sent to client" });
+    res.json({ msg: "Order placed successfully, email sent to admin" });
   } catch (err) {
     console.error("Email error:", err);
     res.status(500).json({ msg: "Failed to send order email" });
@@ -147,7 +150,12 @@ app.use("/api/orders", orderRoutes);
 
 // ✅ Health check
 app.get("/", (req, res) => {
-  res.send("API is running ✅");
+  res.json({ message: "API is running ✅" });
+});
+
+// ✅ 404 fallback
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found" });
 });
 
 export default app;
