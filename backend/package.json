@@ -4,8 +4,9 @@
   "type": "module",
   "main": "api/index.js",
   "scripts": {
-    "start": "node server.js"
-  },
+  "start": "node api/index.js"
+}
+,
   "dependencies": {
     "express": "^4.19.2",
     "mongoose": "^7.6.0",
