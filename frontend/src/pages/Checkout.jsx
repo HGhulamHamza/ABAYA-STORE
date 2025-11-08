@@ -63,7 +63,7 @@ const Checkout = () => {
 
     try {
       const response = await fetch(
-  "https://abaya-store-black.vercel.app/order",
+  "https://abaya-store-u56r.vercel.app/order",
   {
     method: "POST",
     headers: { "Content-Type": "application/json" },

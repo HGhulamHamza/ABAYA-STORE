@@ -48,7 +48,7 @@ const Signup = () => {
       const user = result.user;
 
      await axios.post(
-  "https://abaya-store-black.vercel.app/google-signup",
+  "https://abaya-store-u56r.vercel.app/google-signup",
   {
     name: user.displayName,
     email: user.email,
