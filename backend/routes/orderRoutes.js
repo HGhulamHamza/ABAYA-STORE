@@ -5,7 +5,7 @@ import nodemailer from "nodemailer";
 const router = express.Router();
 
 // ✅ Place Order API
-router.post("/order", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { name, whatsapp, email, address, emergency, cart, subtotal } = req.body;
 
@@ -26,8 +26,8 @@ router.post("/order", async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: process.env.EMAIL_USER, // apka new email
-          pass: process.env.EMAIL_PASS, // app password
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
         },
       });
 
