@@ -29,7 +29,7 @@ function Home() {
       title: (
         <>
           ELEGANCE IN <br />
-          EVERY THREAD
+          EVERY SINGLE THREAD
         </>
       ),
       tagline: "Discover Our Exclusive Styles",
