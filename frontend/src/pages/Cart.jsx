@@ -8,16 +8,28 @@ const Cart = () => {
   const navigate = useNavigate();
 
 useEffect(() => {
-  const storedCart = JSON.parse(sessionStorage.getItem("cart")) || [];
+  const loadCart = () => {
+    const storedCart = JSON.parse(sessionStorage.getItem("cart")) || [];
 
-  const initializedCart = storedCart.map((item, idx) => ({
-    ...item,
-    quantity: item.quantity ? item.quantity : 1,
-    _id: item._id || item.id || `local-${idx}`,
-  }));
+    const initializedCart = storedCart.map((item, idx) => ({
+      ...item,
+      quantity: item.quantity ? item.quantity : 1,
+      _id: item._id || `local-${idx}`,
+    }));
 
-  setCart(initializedCart);
-  sessionStorage.setItem("cart", JSON.stringify(initializedCart));
+    setCart(initializedCart);
+  };
+
+  loadCart();
+
+  // 🔥 listen for updates when coming from other pages
+  window.addEventListener("storage", loadCart);
+  window.addEventListener("focus", loadCart);
+
+  return () => {
+    window.removeEventListener("storage", loadCart);
+    window.removeEventListener("focus", loadCart);
+  };
 }, []);
 
   const updateCart = (updatedCart) => {

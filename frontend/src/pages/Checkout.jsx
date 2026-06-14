@@ -16,16 +16,10 @@ const Checkout = () => {
 
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const checkoutItem = JSON.parse(localStorage.getItem("checkoutItem"));
-
-    if (checkoutItem) {
-      setCart([{ ...checkoutItem, quantity: 1 }]);
-    } else {
-      setCart(storedCart);
-    }
-  }, []);
+ useEffect(() => {
+  const storedCart = JSON.parse(sessionStorage.getItem("cart")) || [];
+  setCart(storedCart);
+}, []);
 
   const subtotal = cart.reduce(
     (acc, item) => acc + item.price * (item.quantity || 1),
