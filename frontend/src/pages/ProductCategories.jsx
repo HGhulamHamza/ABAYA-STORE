@@ -16,6 +16,7 @@ const ProductCategories = () => {
     { name: "Niqabs", image: "/6.jpg" },
     { name: "Accessories", image: "/8/3.jpg" },
     { name: "Winter Collection", image: "/7.jpg" },
+    {name :"Premium Collection", image:"/new.jpeg"}
   ];
 
   const handleClick = (category) => {

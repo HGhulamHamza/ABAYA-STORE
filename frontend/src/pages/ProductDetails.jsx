@@ -37,6 +37,7 @@ const ProductDetails = () => {
     "Exclusive Collection",
     "Wedding Abayas",
     "Winter Collection",
+     "Premium Collection"
   ];
   const isAdvanced = advancedCategories.includes(product.category);
 
@@ -47,7 +48,8 @@ const ProductDetails = () => {
   } else if (
     product.category === "Daily Wear Abayas" ||
     product.category === "Exclusive Collection" ||
-    product.category === "Wedding Abayas"
+    product.category === "Wedding Abayas" ||
+    product.category === "Premium Collection"
   ) {
     sizesToShow = product.sizes?.length > 0 ? product.sizes : defaultSizes;
   }
