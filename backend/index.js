@@ -21,6 +21,7 @@ app.use(
   cors({
     origin: [
       "https://sumptuousmodesty.com",
+       "http://localhost:5173",
       "https://www.sumptuousmodesty.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -41,9 +42,11 @@ async function connectDB() {
     isConnected = db.connections[0].readyState === 1;
     console.log("✅ MongoDB Connected");
   } catch (err) {
-    console.error("❌ MongoDB connection error:", err);
-  }
-}
+  console.error("❌ MongoDB connection error");
+  console.error("message:", err.message);
+  console.error("code:", err.code);
+  console.error(err);
+}}
 
 // ✅ For Vercel → connect on every request
 app.use(async (req, res, next) => {
