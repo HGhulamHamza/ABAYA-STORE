@@ -7,21 +7,23 @@ const Cart = () => {
   const [cart, setCart] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const initializedCart = storedCart.map((item, idx) => ({
-      ...item,
-      quantity: item.quantity ? item.quantity : 1,
-      _id: item._id || item.id || `local-${idx}`,
-    }));
-    setCart(initializedCart);
-    localStorage.setItem("cart", JSON.stringify(initializedCart));
-  }, []);
+useEffect(() => {
+  const storedCart = JSON.parse(sessionStorage.getItem("cart")) || [];
+
+  const initializedCart = storedCart.map((item, idx) => ({
+    ...item,
+    quantity: item.quantity ? item.quantity : 1,
+    _id: item._id || item.id || `local-${idx}`,
+  }));
+
+  setCart(initializedCart);
+  sessionStorage.setItem("cart", JSON.stringify(initializedCart));
+}, []);
 
   const updateCart = (updatedCart) => {
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-  };
+  setCart(updatedCart);
+  sessionStorage.setItem("cart", JSON.stringify(updatedCart));
+};
 
   const handleQuantity = (id, action) => {
     const updated = cart.map((item) => {

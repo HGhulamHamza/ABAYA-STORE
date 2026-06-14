@@ -36,23 +36,20 @@ const Products = () => {
   const handleClose = () => setSnackbar({ ...snackbar, open: false });
 
   const addToCart = (product) => {
-    // ✅ Get existing cart
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
 
-    // ✅ Check if item already exists
-    const existingIndex = cart.findIndex((item) => item._id === product._id);
-    if (existingIndex !== -1) {
-      cart[existingIndex].quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
-    }
+  const existingIndex = cart.findIndex((item) => item._id === product._id);
 
-    // ✅ Save updated cart
-    localStorage.setItem("cart", JSON.stringify(cart));
+  if (existingIndex !== -1) {
+    cart[existingIndex].quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
 
-    // ✅ Snackbar feedback
-    setSnackbar({ open: true, message: "Successfully added to cart!" });
-  };
+  sessionStorage.setItem("cart", JSON.stringify(cart));
+
+  setSnackbar({ open: true, message: "Successfully added to cart!" });
+};
 
   const filteredProducts = products.filter((product) =>
     (product.name || "").toLowerCase().includes(search.toLowerCase())
