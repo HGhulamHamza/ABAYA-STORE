@@ -70,8 +70,7 @@ const Checkout = () => {
 
       if (response.ok) {
         setOrderDone(true);
-        localStorage.removeItem("cart");
-        localStorage.removeItem("checkoutItem");
+        sessionStorage.removeItem("cart");
       } else {
         alert(data.msg || "Something went wrong");
       }

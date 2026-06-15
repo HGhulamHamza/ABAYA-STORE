@@ -102,7 +102,7 @@ const Products = () => {
                   style={styles.cartIcon}
                   onClick={(e) => {
                     e.stopPropagation(); // ✅ Prevent card navigation
-                    addToCart(product);  // ✅ Save to localStorage
+                    addToCart(product);
                   }}
                 />
               </div>

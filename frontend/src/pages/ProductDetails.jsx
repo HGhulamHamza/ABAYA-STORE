@@ -54,47 +54,41 @@ const ProductDetails = () => {
     sizesToShow = product.sizes?.length > 0 ? product.sizes : defaultSizes;
   }
 
-const handleAddToCart = () => {
-  let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+  const addItemToCart = () => {
+    let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+    const productId = product._id;
 
-  const productId = product._id;
-
-  const existingIndex = cart.findIndex(
-    (item) =>
-      item._id === productId &&
-      item.selectedSize === (selectedSize || null)
-  );
-
-  if (existingIndex !== -1) {
-    cart[existingIndex].quantity += 1;
-  } else {
-    cart.push({
-      _id: productId,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      selectedSize: selectedSize || null,
-      quantity: 1,
-    });
-  }
-
-sessionStorage.setItem("cart", JSON.stringify(cart));
-
-// 🔥 force sync event (important)
-window.dispatchEvent(new Event("storage"));
-
-setSnackbarOpen(true);
-
-setTimeout(() => {
-  navigate("/cart");
-}, 800);
-};
-  // ✅ Buy Now Handler
-  const handleBuyNow = () => {
-    localStorage.setItem(
-      "checkoutItem",
-      JSON.stringify({ ...product, selectedSize, quantity: 1 })
+    const existingIndex = cart.findIndex(
+      (item) =>
+        item._id === productId &&
+        item.selectedSize === (selectedSize || null)
     );
+
+    if (existingIndex !== -1) {
+      cart[existingIndex].quantity += 1;
+    } else {
+      cart.push({
+        _id: productId,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        selectedSize: selectedSize || null,
+        quantity: 1,
+      });
+    }
+
+    sessionStorage.setItem("cart", JSON.stringify(cart));
+    window.dispatchEvent(new Event("storage"));
+  };
+
+  const handleAddToCart = () => {
+    addItemToCart();
+    setSnackbarOpen(true);
+    setTimeout(() => navigate("/cart"), 800);
+  };
+
+  const handleBuyNow = () => {
+    addItemToCart();
     navigate("/checkout");
   };
 
@@ -168,7 +162,9 @@ setTimeout(() => {
 
             {/* Action Buttons */}
             <div className="action-buttons">
-           
+              <button className="btn-outline" onClick={handleAddToCart}>
+                Add to Cart
+              </button>
               <button className="btn-filled" onClick={handleBuyNow}>
                 Buy Now
               </button>

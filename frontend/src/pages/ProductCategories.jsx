@@ -262,7 +262,7 @@ const styles = {
     position: "absolute",
     inset: 0,
     background:
-      "linear-gradient(to top, rgba(74, 30, 2, 0.85), rgba(0,0,0,0.35), #616159",
+      "linear-gradient(to top, rgba(111, 43, 0, 0.48), rgba(0,0,0,0.35),rgb(70, 70, 70)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

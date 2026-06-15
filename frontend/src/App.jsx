@@ -10,6 +10,11 @@ import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 
+const WHATSAPP_NUMBER = "923303454454";
+const WHATSAPP_MESSAGE = encodeURIComponent(
+  "Could you please provide details regarding your designs, prices, and customization options?"
+);
+
 function App() {
   return (
     <Router>
@@ -39,7 +44,7 @@ function App() {
           {/* Floating WhatsApp Button */}
      {/* Premium Floating WhatsApp CTA */}
 <a
-  href="https://wa.me/923303454454?text=Asalamolaikum!%20I%20wanted%20to%20have%20a%20customized%20abaya"
+  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`}
   target="_blank"
   rel="noopener noreferrer"
   style={{
