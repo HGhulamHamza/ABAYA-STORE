@@ -2,6 +2,7 @@
 import React from "react";
 import { FaTiktok, FaFacebookF, FaInstagram } from "react-icons/fa";
 import { motion } from "framer-motion";
+import logo from "../../public/logo.jpg";
 
 function Footer() {
   const links = [
@@ -283,7 +284,7 @@ function Footer() {
           transition={{ duration: 0.7 }}
         >
           <div className="ft-logo-row">
-            <img src="frontend\public\logo.jpg" alt="Sumptuous Modesty" className="ft-logo-img" />
+          <img src={logo} alt="Sumptuous Modesty" className="ft-logo-img" />
             <span className="ft-brand-name">Sumptuous Modesty</span>
           </div>
           <p className="ft-tagline">
