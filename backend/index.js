@@ -8,6 +8,7 @@ import nodemailer from "nodemailer";
 
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import Product from "./models/Product.js";
 
 dotenv.config();
 
@@ -136,8 +137,108 @@ const escapeHtml = (value) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
-const isValidImageUrl = (url) =>
-  typeof url === "string" && /^https?:\/\//i.test(url);
+const STORE_BASE_URL =
+  process.env.STORE_URL || "https://sumptuousmodesty.com";
+
+const resolveImageUrl = (image) => {
+  if (!image || typeof image !== "string") return null;
+  const trimmed = image.trim();
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (trimmed.startsWith("//")) return `https:${trimmed}`;
+  const base = STORE_BASE_URL.replace(/\/$/, "");
+  if (trimmed.startsWith("/")) return `${base}${trimmed}`;
+  return `${base}/${trimmed}`;
+};
+
+async function enrichCartWithImages(cart) {
+  return Promise.all(
+    cart.map(async (item) => {
+      let image = item.image;
+
+      if (item._id) {
+        try {
+          const product = await Product.findById(item._id).select("image").lean();
+          if (product?.image) image = product.image;
+        } catch (err) {
+          console.error("Product lookup failed:", err.message);
+        }
+      }
+
+      return { ...item, imageUrl: resolveImageUrl(image) };
+    })
+  );
+}
+
+async function fetchImageBuffer(imageUrl) {
+  const urlsToTry = [imageUrl];
+
+  if (
+    imageUrl.includes("sumptuousmodesty.com") &&
+    !imageUrl.includes("www.")
+  ) {
+    urlsToTry.push(
+      imageUrl.replace("sumptuousmodesty.com", "www.sumptuousmodesty.com")
+    );
+  }
+
+  for (const url of urlsToTry) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) continue;
+
+      const buffer = Buffer.from(await response.arrayBuffer());
+      const contentType = response.headers.get("content-type") || "image/jpeg";
+      return { buffer, contentType };
+    } catch (err) {
+      console.error(`Image fetch failed for ${url}:`, err.message);
+    }
+  }
+
+  return null;
+}
+
+async function buildInlineImageAttachments(items) {
+  const attachments = [];
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    if (!item.imageUrl) continue;
+
+    const fetched = await fetchImageBuffer(item.imageUrl);
+    if (!fetched) continue;
+
+    const { buffer, contentType } = fetched;
+    const ext = contentType.includes("png")
+      ? "png"
+      : contentType.includes("webp")
+        ? "webp"
+        : "jpg";
+    const cid = `product-image-${i}`;
+
+    attachments.push({
+      filename: `${i + 1}-${String(item.name || "product").replace(/[^a-z0-9]/gi, "_")}.${ext}`,
+      content: buffer,
+      cid,
+      contentType,
+    });
+
+    item.imageCid = cid;
+  }
+
+  return attachments;
+}
+
+const buildProductImageHtml = (item) => {
+  if (item.imageCid) {
+    return `<img src="cid:${item.imageCid}" alt="${escapeHtml(item.name)}" width="120" height="120" style="object-fit:cover;border-radius:8px;display:block;" />`;
+  }
+
+  if (item.imageUrl) {
+    return `<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" width="120" height="120" style="object-fit:cover;border-radius:8px;display:block;" />`;
+  }
+
+  return `<div style="width:120px;height:120px;background:#f0f0f0;border-radius:8px;color:#999;font-size:12px;display:flex;align-items:center;justify-content:center;text-align:center;">No image</div>`;
+};
 
 app.post("/order", async (req, res) => {
   const {
@@ -157,47 +258,37 @@ app.post("/order", async (req, res) => {
   }
 
   const orderTotal = total ?? subtotal + shippingFee;
+  const enrichedCart = await enrichCartWithImages(cart);
+  const attachments = await buildInlineImageAttachments(enrichedCart);
 
-  const productRowsHtml = cart
+  const productRowsHtml = enrichedCart
     .map((item) => {
       const qty = item.quantity || 1;
       const lineTotal = item.price * qty;
-      const imageHtml = isValidImageUrl(item.image)
-        ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" width="120" height="120" style="object-fit:cover;border-radius:8px;display:block;" />`
-        : `<div style="width:120px;height:120px;background:#f0f0f0;border-radius:8px;color:#999;font-size:12px;display:flex;align-items:center;justify-content:center;text-align:center;">No image</div>`;
 
       return `
         <tr>
-          <td style="padding:12px;border-bottom:1px solid #eee;vertical-align:top;">${imageHtml}</td>
+          <td style="padding:12px;border-bottom:1px solid #eee;vertical-align:top;">${buildProductImageHtml(item)}</td>
           <td style="padding:12px;border-bottom:1px solid #eee;vertical-align:top;">
             <strong>${escapeHtml(item.name)}</strong><br/>
             ${item.selectedSize ? `Size: ${escapeHtml(item.selectedSize)}<br/>` : ""}
             Quantity: ${qty}<br/>
             Price: Rs ${lineTotal}
-            ${isValidImageUrl(item.image) ? `<br/><a href="${escapeHtml(item.image)}">View image</a>` : ""}
+            ${item.imageUrl ? `<br/><a href="${escapeHtml(item.imageUrl)}">View image</a>` : ""}
           </td>
         </tr>
       `;
     })
     .join("");
 
-  const productLinesText = cart
+  const productLinesText = enrichedCart
     .map((item) => {
       const qty = item.quantity || 1;
       const sizeText = item.selectedSize ? `(Size: ${item.selectedSize})` : "";
-      const imageText = isValidImageUrl(item.image)
-        ? `\n  Image: ${item.image}`
-        : "";
+      const imageText = item.imageUrl ? `\n  Image: ${item.imageUrl}` : "";
       return `- ${item.name} ${sizeText} x${qty} - Rs ${item.price * qty}${imageText}`;
     })
     .join("\n");
-
-  const attachments = cart
-    .filter((item) => isValidImageUrl(item.image))
-    .map((item, index) => ({
-      filename: `${index + 1}-${String(item.name || "product").replace(/[^a-z0-9]/gi, "_")}.jpg`,
-      path: item.image,
-    }));
 
   const html = `
     <div style="font-family:Arial,sans-serif;color:#333;max-width:640px;">

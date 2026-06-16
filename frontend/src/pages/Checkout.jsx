@@ -1,6 +1,14 @@
 // src/pages/Checkout.jsx
 import React, { useState, useEffect } from "react";
 
+const STORE_URL = "https://sumptuousmodesty.com";
+
+const resolveProductImage = (image) => {
+  if (!image || typeof image !== "string") return image;
+  if (/^https?:\/\//i.test(image)) return image;
+  return image.startsWith("/") ? `${STORE_URL}${image}` : `${STORE_URL}/${image}`;
+};
+
 const Checkout = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -61,7 +69,16 @@ const Checkout = () => {
   {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...formData, cart, subtotal, shippingFee, total }),
+    body: JSON.stringify({
+      ...formData,
+      cart: cart.map((item) => ({
+        ...item,
+        image: resolveProductImage(item.image),
+      })),
+      subtotal,
+      shippingFee,
+      total,
+    }),
   }
 );
 
