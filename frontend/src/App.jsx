@@ -9,6 +9,7 @@ import SignUp from "./pages/Signup";
 import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import MetaPixel from "./components/MetaPixel";
 
 const WHATSAPP_NUMBER = "923303454454";
 const WHATSAPP_MESSAGE = encodeURIComponent(
@@ -18,6 +19,7 @@ const WHATSAPP_MESSAGE = encodeURIComponent(
 function App() {
   return (
     <Router>
+      <MetaPixel />
       <div
         className="app-container"
         style={{
