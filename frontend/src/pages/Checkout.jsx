@@ -1,8 +1,41 @@
 // src/pages/Checkout.jsx
-import React, { useState, useEffect } from "react";
-import { FaUser, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaPhone, FaLock, FaCheckCircle, FaShoppingBag, FaArrowRight } from "react-icons/fa";
+import React, { useState, useEffect, useRef } from "react";
+import { FaUser, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaPhone, FaLock, FaCheckCircle, FaShoppingBag, FaArrowRight, FaCity, FaChevronDown } from "react-icons/fa";
 
 const STORE_URL = "https://sumptuousmodesty.com";
+
+// ── All cities in Pakistan (172 cities) ──
+const PAKISTAN_CITIES = [
+  "Abbottabad", "Addul Hakeem", "Ahmadpur East", "Ahmed Nager Chatha", "Ahmednagar",
+  "Akora Khattak", "Ali Khan Abad", "Alipur", "Alpuri", "Arandu", "Arifwala",
+  "Atharan Hazari", "Attock", "Badah", "Badin", "Baghdada", "Bahawalnagar",
+  "Bahawalpur", "Banda Daudshah", "Bannu", "Barikot", "Batagram", "Batkhela",
+  "Bhakkar", "Bhalwal", "Bhera", "Burewala", "Chak Jhumra", "Chakdara", "Chakwal",
+  "Chaman", "Chamla", "Charsadda", "Chichawatni", "Chiniot", "Chishtian",
+  "Choa Saidanshah", "Chunian", "Daggar", "Dajkot", "Darya Khan", "Daska",
+  "Dera Ghazi Khan", "Dera Ismail Khan", "Dhaular", "Dijkot", "Dina", "Dinga",
+  "Dipalpur", "Domel", "Faisalabad", "Fateh Jang", "Ghakhar Mandi", "Ghotki",
+  "Gojra", "Gujar Khan", "Gujranwala", "Gujrat", "Hafizabad", "Hangu", "Harappa",
+  "Haripur", "Haroonabad", "Hasilpur", "Haveli Lakha", "Havelian", "Hyderabad",
+  "Islamabad", "Jalalpur Jattan", "Jampur", "Jaranwala", "Jauharabad", "Jhang",
+  "Jhelum", "Kalabagh", "Kalaya", "Kallar Syedan", "Kamalia", "Kāmoke", "Karachi",
+  "Karak", "Karor Lal Esan", "Kasur", "Khanewal", "Khanpur", "Khanqah Sharif",
+  "Kharian", "Khushab", "Kohat", "Kot Adu", "Kot Addu", "Kot Najibullah", "Lahore",
+  "Lakki Marwat", "Lala Musa", "Lalamusa", "Larkana", "Layyah", "Lawa Chakwal",
+  "Liaquat Pur", "Lodhran", "Mailsi", "Malakwal", "Mamoori", "Mandi Bahauddin",
+  "Mansehra", "Mardan", "Matiari", "Mian Channu", "Mianwali", "Mianwali Bangla",
+  "Mingora", "Mirpur", "Mirpur Khas", "Moro", "Multan", "Muridke", "Murree",
+  "Muzaffargarh", "Nankana Sahib", "Narowal", "Nawabshah", "Nowshera", "Okara",
+  "Pakpattan", "Pattoki", "Peshawar", "Phool Nagar", "Pindi Bhattian",
+  "Pind Dadan Khan", "Pir Mahal", "Qaimpur", "Qila Didar Singh", "Quetta",
+  "Rabwah", "Rahim Yar Khan", "Raiwind", "Rajanpur", "Rawalpindi", "Renala Khurd",
+  "Sadiqabad", "Sagri", "Sahiwal", "Saidu Sharif", "Sambrial", "Samundri",
+  "Sangla Hill", "Sargodha", "Shahdadkot", "Shahdadpur", "Shakargarh",
+  "Sheikhupura", "Shujaabad", "Sialkot", "Siranwali", "Sohawa", "Sukkur", "Swabi",
+  "Talagang", "Tandlianwala", "Tando Muhammad Khan", "Taunsa", "Taxila", "Thatta",
+  "Toba Tek Singh", "Turbat", "Umerkot", "Vehari", "Wah Cantonment", "Wazirabad",
+  "Yazman", "Zafarwal",
+];
 
 const resolveProductImage = (image) => {
   if (!image || typeof image !== "string") return image;
@@ -14,12 +47,48 @@ const Checkout = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
   const [orderDone, setOrderDone] = useState(false);
-  const [formData, setFormData] = useState({ name: "", whatsapp: "", email: "", address: "", emergency: "" });
+  const [formData, setFormData] = useState({
+    name: "", whatsapp: "", email: "", address: "", emergency: "", city: ""
+  });
   const [errors, setErrors] = useState({});
+
+  // ── City combobox state ──
+  const [cityQuery, setCityQuery] = useState("");
+  const [cityOpen, setCityOpen] = useState(false);
+  const [cityFiltered, setCityFiltered] = useState([]);
+  const cityInputRef = useRef(null);
+  const cityListRef = useRef(null);
 
   useEffect(() => {
     const storedCart = JSON.parse(sessionStorage.getItem("cart")) || [];
     setCart(storedCart);
+  }, []);
+
+  // Filter cities as user types
+  useEffect(() => {
+    const q = cityQuery.trim().toLowerCase();
+    if (!q) {
+      setCityFiltered([]);
+      return;
+    }
+    const matches = PAKISTAN_CITIES.filter(c =>
+      c.toLowerCase().includes(q)
+    ).slice(0, 8); // max 8 suggestions
+    setCityFiltered(matches);
+  }, [cityQuery]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (
+        cityListRef.current && !cityListRef.current.contains(e.target) &&
+        cityInputRef.current && !cityInputRef.current.contains(e.target)
+      ) {
+        setCityOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0);
@@ -32,12 +101,28 @@ const Checkout = () => {
     if (!formData.whatsapp.trim()) newErrors.whatsapp = "WhatsApp number is required";
     if (!formData.address.trim()) newErrors.address = "Home address is required";
     if (!formData.emergency.trim()) newErrors.emergency = "Emergency contact number is required";
+    if (!formData.city.trim()) newErrors.city = "City is required";
     return newErrors;
   };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (errors[e.target.name]) setErrors({ ...errors, [e.target.name]: "" });
+  };
+
+  const handleCityInputChange = (e) => {
+    const val = e.target.value;
+    setCityQuery(val);
+    setFormData(prev => ({ ...prev, city: val }));
+    if (errors.city) setErrors(prev => ({ ...prev, city: "" }));
+    setCityOpen(true);
+  };
+
+  const handleCitySelect = (cityName) => {
+    setCityQuery(cityName);
+    setFormData(prev => ({ ...prev, city: cityName }));
+    setCityOpen(false);
+    if (errors.city) setErrors(prev => ({ ...prev, city: "" }));
   };
 
   const handleCheckout = async (e) => {
@@ -104,7 +189,7 @@ const Checkout = () => {
           <div className="od-ornament" />
           <p className="od-text">
             Thank you for shopping with Sumptuous Modesty. Your order has been received
-            and will be processed shortly. We'll reach out on WhatsApp to confirm.
+            and will be processed shortly. We\'ll reach out on WhatsApp to confirm.
           </p>
         </div>
       </>
@@ -175,7 +260,7 @@ const Checkout = () => {
         }
         .co-section-head svg { font-size: 15px; color: #006400; }
 
-        .co-field { margin-bottom: 24px; }
+        .co-field { margin-bottom: 24px; position: relative; }
         .co-field-label {
           display: flex; align-items: center; gap: 6px;
           font-size: 9.5px; font-weight: 700;
@@ -203,6 +288,78 @@ const Checkout = () => {
           display: flex; align-items: center; gap: 4px;
         }
         .co-error::before { content: '—'; }
+
+        /* ── City Combobox ── */
+        .co-city-wrap { position: relative; }
+        .co-city-input-wrap {
+          position: relative;
+          display: flex;
+          align-items: center;
+        }
+        .co-city-input-wrap .co-input {
+          padding-right: 28px;
+        }
+        .co-city-chevron {
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 10px;
+          color: #B2B596;
+          cursor: pointer;
+          transition: transform 0.2s, color 0.2s;
+          padding: 4px;
+        }
+        .co-city-chevron.open {
+          transform: translateY(-50%) rotate(180deg);
+          color: #006400;
+        }
+        .co-city-list {
+          position: absolute;
+          top: calc(100% + 4px);
+          left: 0;
+          right: 0;
+          max-height: 220px;
+          overflow-y: auto;
+          background: #fff;
+          border: 1px solid rgba(178,181,150,0.35);
+          border-top: none;
+          z-index: 50;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+          animation: citySlide 0.2s ease both;
+        }
+        @keyframes citySlide {
+          from { opacity: 0; transform: translateY(-4px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .co-city-item {
+          padding: 10px 14px;
+          font-size: 13px;
+          font-weight: 300;
+          color: #444;
+          cursor: pointer;
+          border-bottom: 0.5px solid rgba(178,181,150,0.12);
+          transition: background 0.15s, color 0.15s;
+          letter-spacing: 0.2px;
+        }
+        .co-city-item:last-child { border-bottom: none; }
+        .co-city-item:hover,
+        .co-city-item.highlight {
+          background: #f7f5ee;
+          color: #006400;
+        }
+        .co-city-item mark {
+          background: transparent;
+          font-weight: 700;
+          color: #006400;
+        }
+        .co-city-empty {
+          padding: 14px;
+          font-size: 12px;
+          color: #aaa;
+          text-align: center;
+          font-style: italic;
+        }
 
         /* Payment */
         .co-payment {
@@ -372,6 +529,60 @@ const Checkout = () => {
                   {errors[name] && <p className="co-error">{errors[name]}</p>}
                 </div>
               ))}
+
+              {/* ── City Combobox ── */}
+              <div className="co-field co-city-wrap">
+                <label className="co-field-label"><FaCity /> City *</label>
+                <div className="co-city-input-wrap">
+                  <input
+                    ref={cityInputRef}
+                    type="text"
+                    name="city"
+                    placeholder="Type or select your city…"
+                    value={cityQuery}
+                    onChange={handleCityInputChange}
+                    onFocus={() => setCityOpen(true)}
+                    autoComplete="off"
+                    className={`co-input${errors.city ? " err" : ""}`}
+                  />
+                  <FaChevronDown
+                    className={`co-city-chevron${cityOpen ? " open" : ""}`}
+                    onClick={() => {
+                      setCityOpen(prev => !prev);
+                      cityInputRef.current?.focus();
+                    }}
+                  />
+                </div>
+
+                {cityOpen && (
+                  <div ref={cityListRef} className="co-city-list">
+                    {cityFiltered.length > 0 ? (
+                      cityFiltered.map((city) => {
+                        const idx = city.toLowerCase().indexOf(cityQuery.toLowerCase());
+                        const before = city.slice(0, idx);
+                        const match = city.slice(idx, idx + cityQuery.length);
+                        const after = city.slice(idx + cityQuery.length);
+                        return (
+                          <div
+                            key={city}
+                            className="co-city-item"
+                            onClick={() => handleCitySelect(city)}
+                            onMouseEnter={(e) => e.currentTarget.classList.add("highlight")}
+                            onMouseLeave={(e) => e.currentTarget.classList.remove("highlight")}
+                          >
+                            {before}<mark>{match}</mark>{after}
+                          </div>
+                        );
+                      })
+                    ) : cityQuery.trim() ? (
+                      <div className="co-city-empty">No city found — you can still type freely</div>
+                    ) : (
+                      <div className="co-city-empty">Start typing to see city suggestions…</div>
+                    )}
+                  </div>
+                )}
+                {errors.city && <p className="co-error">{errors.city}</p>}
+              </div>
 
               <div className="co-field">
                 <label className="co-field-label"><FaMapMarkerAlt /> Home Address *</label>
